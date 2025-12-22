@@ -1,0 +1,13 @@
+# Frontend
+frontend/my-app/node_modules/
+frontend/my-app/dist/
+
+# Backend
+backend/ticketsystem/__pycache__/
+backend/.venv/
+backend/.env
+
+# General
+.env
+.env.*
+.DS_Store
