@@ -1,0 +1,61 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.box-grp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
+    margin-top: 60px;
+}
+
+.box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    max-width: fit-content;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+.box .heading{
+    color: var(--color-gray-600);
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-lg);
+    line-height: var(--tw-leading, var(--text-4xl--line-height));
+    text-align: center;   
+}
+
+.box .image{
+    width: 12em;
+    height: auto;
+    object-fit: contain;
+}
+
+.box .button{
+    background-color: rgb(var(--color-primary));
+    padding: 5px 7px 5px 7px;
+    border-radius: 7px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.box .button:hover{
+    transform: scale(1.05);
+}
+
+@media (max-width: 572px) {
+    .box-grp{
+        flex-direction: column;
+        gap: 50px
+    }
+}
