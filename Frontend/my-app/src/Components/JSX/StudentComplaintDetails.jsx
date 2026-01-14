@@ -16,10 +16,10 @@ const StudentComplaintDetails = () =>{
                     {/* Header */}
                     <div className="px-6 py-6 border-b border-gray-300">
                         <h2 className="text-3xl font-bold text-red-600">
-                            Resolve Complaint
+                            Complaint Status
                         </h2>
                         <p className="text-sm text-gray-500 mt-1">
-                            Review the complaint and submit your resolution note
+                            View your complaint's current status.
                         </p>
                     </div>
 

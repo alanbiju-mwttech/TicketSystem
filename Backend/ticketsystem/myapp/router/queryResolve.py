@@ -148,7 +148,7 @@ def complaint_action(review: schemas.Review_Complaint, db: Session = Depends(dat
                 .filter(models.Role.roleid == remaining_step.roleid)\
                 .scalar()
 
-            complaint.status = f"PENDING_{role_name}" # type: ignore
+            complaint.status = f"Pending with {role_name}" # type: ignore
 
         db.commit()
 

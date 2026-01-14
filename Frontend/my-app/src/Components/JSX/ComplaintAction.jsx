@@ -78,7 +78,7 @@ const ComplaintAction = () => {
                             Resolve Complaint
                         </h2>
                         <p className="text-sm text-gray-500 mt-1">
-                            Review the complaint and submit your resolution note
+                            Review the complaint and submit your resolution note.
                         </p>
                     </div>
 
