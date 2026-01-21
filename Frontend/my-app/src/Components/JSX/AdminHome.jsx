@@ -1,6 +1,7 @@
 import '../CSS/StudentHome.css'
 import AddWorkFlow from "../../Assets/AddWorkflow.png";
 import ViewWorkFlow from "../../Assets/ViewWorkflow.png";
+import TrackComplaint from "../../Assets/TrackComplaint.png";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -22,6 +23,10 @@ const AdminHome = () =>{
     const ViewWorkFlows = () => {
         console.log(isLoggedIn)
         isLoggedIn ? navigate('/allWorkFlow') : navigate('/login')
+    }
+
+    const View_Status = () => {
+        isLoggedIn ? navigate('/all-complaint') : navigate('/login')
     }
 
     return(
@@ -48,6 +53,15 @@ const AdminHome = () =>{
                             <img src={ViewWorkFlow} alt="Complaint Register" />
                         </div>
                         <button className='button' onClick={ViewWorkFlows}>View WorkFlows</button>
+                    </div>
+                    <div className="box shadow-2xl">
+                        <div className="heading">
+                            View All Queries
+                        </div>
+                        <div className="image">
+                            <img src={TrackComplaint} alt="Complaint Register" />
+                        </div>
+                        <button className='button' onClick={View_Status}>View Complaints</button>
                     </div>
                 </div>
             </div>

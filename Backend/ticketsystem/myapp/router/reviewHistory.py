@@ -5,22 +5,58 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-@router.get('/complaints/{complaint_id}/review-history')
-def get_current_step(complaint_id: int, db: Session = Depends(database.get_db)):
+@router.post("/complaints/review-history")
+def get_review_history(details: schemas.Details, db: Session = Depends(database.get_db)):
+    user = (
+        db.query(models.User)
+        .filter(models.User.userid == details.user_id)
+        .first()
+    )
 
-    complaint_steps = []
-    complaint_step = db.query(models.Compaint_Steps).filter(models.Compaint_Steps.complaint_id == complaint_id).all()
+    if not user:
+        return {}
 
-    for step in complaint_step:
+    user_role_name = (
+        db.query(models.Role.role)
+        .filter(models.Role.roleid == user.roleid)
+        .scalar()
+    )
 
-        reviewer = db.query(models.User).filter(models.User.userid == step.acted_by).first()
-        role = db.query(models.Role).filter(models.Role.roleid == reviewer.roleid).first() # type: ignore
+    rows = (
+        db.query(
+            models.Compaint_Steps,
+            models.User,
+            models.Role
+        )
+        .join(models.User, models.User.userid == models.Compaint_Steps.acted_by)
+        .join(models.Role, models.Role.roleid == models.User.roleid)
+        .filter(models.Compaint_Steps.complaint_id == details.complaint_id)
+        .order_by(
+            models.Compaint_Steps.workflow_step_id,
+            models.Compaint_Steps.acted_at
+        )
+        .all()
+    )
 
-        complaint_steps.append({
-            "reviewer_name": reviewer.name, # type: ignore
-            "role": role.role, # type: ignore
+    history = {}
+
+    for step, acted_user, role in rows:
+
+        if user_role_name == "Student" and step.isPrivate == True:
+            continue
+
+        entry = {
+            "action": step.action_type.value,
             "note": step.note,
-            "acted_at": step.acted_at
-        })
+            "acted_by": acted_user.name,
+            "role": role.role,
+            "acted_at": step.acted_at,
+        }
 
-    return complaint_steps
+        # ONLY non-students see isPrivate
+        if user_role_name != "Student":
+            entry["isPrivate"] = step.isPrivate
+
+        history.setdefault(step.workflow_step_id, []).append(entry)
+
+    return history

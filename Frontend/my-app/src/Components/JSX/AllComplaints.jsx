@@ -1,21 +1,21 @@
-import { useNavigate } from "react-router-dom"
-import NavBar from "./NavBar"
-import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
+import { useEffect, useState } from "react";
 
-const ReviewComplaint = () =>{
+const AllComplaints = () => {
 
-    const [complaints, setComplaints] = useState([])
     const navigate = useNavigate()
+    const [complaints, setComplaints] = useState([])
 
-    const get_complaints = async() =>{
+    const get_complaints = async () => {
         const user_id = sessionStorage.getItem('user_id')
         try {
-            const res = await fetch(`http://127.0.0.1:8000/complaints/pending`,{
+            const res = await fetch(`http://127.0.0.1:8000/get-all-complaints`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({"user_id": user_id})
+                body: JSON.stringify({ "studentId": user_id })
             })
 
             if (!res.ok) {
@@ -24,14 +24,11 @@ const ReviewComplaint = () =>{
             }
 
             const data = await res.json()
+            console.log(data)
             setComplaints(data)
         } catch (error) {
             console.error(error)
         }
-    }
-
-    const review_Each_Complaint = (complaint_id) =>{
-        navigate(`/complaints/${complaint_id}/act`)
     }
 
     const formatDateTime = (isoString) => {
@@ -46,7 +43,11 @@ const ReviewComplaint = () =>{
         });
     };
 
-    useEffect(() =>{
+    const review_Each_Complaint = (complaint_id) => {
+        navigate(`/admin/complaints/${complaint_id}`)
+    }
+
+    useEffect(()=>{
         get_complaints()
     },[])
 
@@ -76,18 +77,19 @@ const ReviewComplaint = () =>{
                                 <tr>
                                     <th className="px-3 py-4">#</th>
                                     <th className="px-3 py-4 w-1/5">Subject</th>
-                                    <th className="px-3 py-4 w-1/3">Status</th>
+                                    <th className="px-3 py-4 w-1/4">Description</th>
+                                    <th className="px-3 py-4 text-center">WorkFlow Id</th>
+                                    <th className="px-3 py-4 text-center">Status</th>
                                     <th className="px-3 py-4 text-center">Created At</th>
-                                    <th className="px-3 py-4 text-center">Current WorkFlow Step</th>
                                 </tr>
                             </thead>
                             <tbody className="h-1 overflow-y-scroll">
                                 {complaints.length > 0 ? (
                                     complaints.map((complaint, index) => (
-                                        <tr 
-                                            onClick={() => {review_Each_Complaint(complaint.complaint_id)}}
+                                        <tr
                                             key={complaint.complaint_id}
                                             className="border-b border-gray-200 hover:bg-red-50 transition cursor-pointer"
+                                            onClick={() => { review_Each_Complaint(complaint.complaint_id) }}
                                         >
                                             <td className="px-3 py-4 font-semibold">
                                                 {index + 1}
@@ -98,21 +100,24 @@ const ReviewComplaint = () =>{
                                             </td>
 
                                             <td className="px-3 py-4 font-semibold">
+                                                {complaint.description}
+                                            </td>
+
+                                            <td className="px-3 py-4 font-semibold text-center">
+                                                {complaint.workflow_id}
+                                            </td>
+
+                                            <td className="px-3 py-4 font-semibold text-center">
                                                 {complaint.status}
                                             </td>
 
                                             <td className="px-3 py-4 font-semibold text-center">
                                                 {formatDateTime(complaint.created_at)}
                                             </td>
-
-                                            <td className="px-3 py-4 font-semibold text-center">
-                                                {complaint.step_order}
-                                            </td>
                                         </tr>
 
                                     ))
-                                ) :
-                                    (
+                                ) : (
                                         <tr>
                                             <td
                                                 colSpan="5"
@@ -131,4 +136,5 @@ const ReviewComplaint = () =>{
         </>
     )
 }
-export default ReviewComplaint
+
+export default AllComplaints

@@ -43,3 +43,34 @@ def register_complaint(complaint_details: schemas.Complaint, db: Session = Depen
 def get_complaints(studentId: schemas.StudentId, db: Session = Depends(database.get_db)):
     complaints = db.query(models.Complaint).filter(models.Complaint.student_id == studentId.studentId).all()
     return complaints
+
+@router.post("/get-all-complaints")
+def get_all_complaints(payload: schemas.StudentId, db: Session = Depends(database.get_db)):
+
+    user = (
+        db.query(models.User)
+        .filter(models.User.userid == payload.studentId)
+        .first()
+    )
+
+    if not user:
+        raise HTTPException(404, "User not found")
+
+    role = (
+        db.query(models.Role.role)
+        .filter(models.Role.roleid == user.roleid)
+        .scalar()
+    )
+
+    is_admin = role == "Admin"
+
+    if is_admin:
+        complaints = db.query(models.Complaint).order_by(models.Complaint.created_at.desc()).all()
+
+    else:
+        raise HTTPException(
+            403,
+            "You are not authorized to act on this workflow step"
+        )
+
+    return complaints

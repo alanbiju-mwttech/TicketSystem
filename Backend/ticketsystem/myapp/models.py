@@ -1,7 +1,14 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Boolean, DateTime, Enum
 from myapp.database import Base
 from sqlalchemy.sql import func
 from datetime import datetime
+import enum
+
+class StepAction(enum.Enum):
+    REQUEST_INFO = "REQUEST_INFO"
+    INFO_RESPONSE = "INFO_RESPONSE"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
 
 class Role(Base):
     
@@ -49,6 +56,7 @@ class Complaint(Base):
     workflow_id = Column(Integer, ForeignKey("workflow.workflow_id"), nullable=False, index=True)
     status = Column(String, default="COMPLAINT REGISTERED", nullable=False, index=True)
     created_at = Column(DateTime, default=lambda: datetime.now().replace(microsecond=0))
+    is_paused = Column(Boolean, default=False)
 
 class Compaint_Steps(Base):
 
@@ -57,6 +65,8 @@ class Compaint_Steps(Base):
     complaint_step_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     complaint_id = Column(Integer, ForeignKey("complaint.complaint_id"))
     workflow_step_id = Column(Integer, ForeignKey("workflow_steps.workflow_step_id"))
+    action_type = Column(Enum(StepAction), nullable=False)
     note = Column(Text, nullable=False, index=True)
+    isPrivate = Column(Boolean, nullable=False, index=True, default=True)
     acted_by = Column(Integer, ForeignKey("user.userid"))
     acted_at = Column(DateTime, default=lambda: datetime.now().replace(microsecond=0))

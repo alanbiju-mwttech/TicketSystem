@@ -16,7 +16,6 @@ const AddWorkFlow = () => {
                 method: 'GET',
             })
             const popular_songs = await response.json()
-            // console.log(popular_songs)
             setRoles(popular_songs)
         } catch (error) {
             console.error(error.message);
@@ -36,6 +35,7 @@ const AddWorkFlow = () => {
     const addStep = () => {
         if (!steps[steps.length - 1].role) return;
         setSteps([...steps, { role: "" }]);
+        console.log(steps)
     };
 
     const removeStep = (index) => {
@@ -44,7 +44,6 @@ const AddWorkFlow = () => {
     };
 
     const addWorkFlow = async (payload) =>{
-        console.log(payload)
         try {
             const response = await fetch(`http://127.0.0.1:8000/add-workflow`,{
                 method: "POST",

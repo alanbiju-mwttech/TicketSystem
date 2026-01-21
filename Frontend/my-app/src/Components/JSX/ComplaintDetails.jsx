@@ -1,26 +1,32 @@
 import { useEffect, useState } from "react";
 
-const ComplaintDetails = ({ complaint_id }) => {
-
-    const [complaint, setComplaint] = useState(null);
+const ComplaintDetails = ({ complaint_id, onPausedStatus, onInfoRequested }) => {
+    const [complaint, setComplaint] = useState(null)
 
     useEffect(() => {
         const get_complaint = async () => {
             try {
                 const response = await fetch(
                     `http://127.0.0.1:8000/complaints/${complaint_id}/act`
-                );
-                const data = await response.json();
-                setComplaint(data);
+                )
+                const data = await response.json()
+                setComplaint(data)
+
+                // 🔑 Send is_paused to parent
+                if (onPausedStatus) {
+                    onPausedStatus(data[0].is_paused)
+                }
+                onInfoRequested?.(data[0].current_action === "REQUEST_INFO")
+
             } catch (error) {
-                console.error(error);
+                console.error(error)
             }
-        };
+        }
 
         if (complaint_id) {
-            get_complaint();
+            get_complaint()
         }
-    }, [complaint_id]);
+    }, [complaint_id, onPausedStatus, onInfoRequested])  
 
     const formatDateTime = (isoString) => {
         const date = new Date(isoString);

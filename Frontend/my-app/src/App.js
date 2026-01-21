@@ -9,6 +9,8 @@ import ViewStatus from './Components/JSX/ViewStatus';
 import ReviewComplaint from './Components/JSX/ReviewComplaint';
 import ComplaintAction from './Components/JSX/ComplaintAction';
 import StudentComplaintDetails from './Components/JSX/StudentComplaintDetails';
+import AllComplaints from './Components/JSX/AllComplaints';
+import AdminComplaintDetails from './Components/JSX/AdminComplaintDetails';
 
 const App = () => {
     return (
@@ -22,8 +24,10 @@ const App = () => {
                     <Route path='/allWorkFlow' element={<AllWorkFlow />} />
                     <Route path='/view-status' element={<ViewStatus />} />
                     <Route path='/review-complaint' element={<ReviewComplaint />} />
+                    <Route path='/all-complaint' element={<AllComplaints />} />
                     <Route path='/complaints/:complaint_id/act' element={<ComplaintAction />} />
                     <Route path='/complaints/:complaint_id/view' element={<StudentComplaintDetails />} />
+                    <Route path='/admin/complaints/:complaint_id/' element={<AdminComplaintDetails />} />
                 </Routes>
             </Router>
         </>

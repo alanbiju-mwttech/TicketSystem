@@ -30,4 +30,32 @@ class Current_User(BaseModel):
 class Review_Complaint(BaseModel):
     complaint_id: int
     note: str
+    isPrivate: bool
+    acted_by: int
+
+class Details(BaseModel):
+    user_id: int
+    complaint_id: int
+
+class RequestInfo(BaseModel):
+    complaint_id: int
+    acted_by: int
+    note: str
+
+
+class InfoResponse(BaseModel):
+    complaint_id: int
+    note: str
+    acted_by: int
+
+
+class ApproveComplaint(BaseModel):
+    complaint_id: int
+    reviewer_id: int
+    note: str
+
+
+class RejectComplaint(BaseModel):
+    complaint_id: int
+    note: str
     acted_by: int

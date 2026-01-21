@@ -9,7 +9,6 @@ const ViewStatus = () =>{
 
     const get_complaints = async() =>{
         const studentId = sessionStorage.getItem('user_id')
-        console.log(studentId)
         try {
             const res = await fetch(`http://127.0.0.1:8000/get-complaints`,{
                 method: "POST",

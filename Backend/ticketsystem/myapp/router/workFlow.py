@@ -117,8 +117,6 @@ def set_active(workflow_id: schemas.WorkFlow_id, db: Session = Depends(database.
 @router.delete('/delete-workflow')
 def delete_workflow(workflow_id: schemas.WorkFlow_id, db: Session = Depends(database.get_db)):
     try:
-        print(workflow_id)
-
         db.query(models.Workflow_Steps)\
             .filter(models.Workflow_Steps.workflow_id == workflow_id.workflow_id)\
             .delete(synchronize_session=False)
