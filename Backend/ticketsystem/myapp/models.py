@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, Boolean, DateTime, Enum
 from myapp.database import Base
-from sqlalchemy.sql import func
 from datetime import datetime
 import enum
 
@@ -58,7 +57,7 @@ class Complaint(Base):
     created_at = Column(DateTime, default=lambda: datetime.now().replace(microsecond=0))
     is_paused = Column(Boolean, default=False)
 
-class Compaint_Steps(Base):
+class Complaint_Steps(Base):
 
     __tablename__ = "complaint_steps"
 

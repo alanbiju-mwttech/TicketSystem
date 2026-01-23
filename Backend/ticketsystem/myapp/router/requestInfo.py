@@ -1,5 +1,4 @@
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from myapp import schemas, database, models, utils
 from sqlalchemy.orm import Session
 
@@ -11,7 +10,7 @@ def request_info(payload: schemas.RequestInfo, db: Session = Depends(database.ge
 
     step = utils.get_current_workflow_step(db, payload.complaint_id)
 
-    db.add(models.Compaint_Steps(
+    db.add(models.Complaint_Steps(
         complaint_id=payload.complaint_id,
         workflow_step_id=step.workflow_step_id, # type: ignore
         action_type=models.StepAction.REQUEST_INFO,
@@ -33,7 +32,7 @@ def info_response(payload: schemas.InfoResponse, db: Session = Depends(database.
 
     step = utils.get_current_workflow_step(db, payload.complaint_id)
 
-    db.add(models.Compaint_Steps(
+    db.add(models.Complaint_Steps(
         complaint_id=payload.complaint_id,
         workflow_step_id=step.workflow_step_id, # type: ignore
         action_type=models.StepAction.INFO_RESPONSE,

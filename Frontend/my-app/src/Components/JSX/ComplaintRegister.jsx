@@ -55,21 +55,6 @@ const ComplaintForm = () => {
                     </h2>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* <div class="w-full max-w-lg min-w-[200px]">
-                            <div class="relative">
-                                <input
-                                    id="contactNumber"
-                                    name="studentName"
-                                    value={formData.studentName}
-                                    onChange={handleChange}
-                                    class="peer w-full border border-red-300 bg-transparent placeholder:text-red-500 text-slate-700 text-sm rounded-md pr-3 pl-10 py-2 transition duration-300 ease focus:outline-none focus:border-red-600 hover:border-red-500 shadow-sm focus:shadow"
-                                    required
-                                />
-                                <label for="contactNumber" class="absolute cursor-text bg-white px-1 left-9 top-2.5 text-slate-400 text-sm transition-all transform origin-left peer-focus:-top-2 peer-focus:left-10 peer-focus:text-m peer-focus:font-medium peer-focus:text-red-500 peer-focus:scale-90">
-                                    e.g., +1 123-456-7890
-                                </label>
-                            </div>
-                        </div> */}
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700">

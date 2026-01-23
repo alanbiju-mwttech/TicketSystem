@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from myapp import schemas, database, models, utils
 from sqlalchemy.orm import Session
@@ -23,9 +22,9 @@ def get_current_step(current_user: schemas.Current_User, db: Session = Depends(d
         )
 
         completed_steps = (
-            db.query(models.Compaint_Steps)
-            .filter(models.Compaint_Steps.complaint_id == complaint.complaint_id, 
-                    models.Compaint_Steps.action_type == models.StepAction.APPROVED)
+            db.query(models.Complaint_Steps)
+            .filter(models.Complaint_Steps.complaint_id == complaint.complaint_id, 
+                    models.Complaint_Steps.action_type == models.StepAction.APPROVED)
             .all()
         )
         completed_step_ids = {s.workflow_step_id for s in completed_steps}
@@ -60,9 +59,9 @@ def get_each_complaint(complaint_id: int, db: Session = Depends(database.get_db)
 
     student = db.query(models.User).filter(models.User.userid == complaint.student_id).first() # type: ignore
 
-    last_step = db.query(models.Compaint_Steps).\
-    filter(models.Compaint_Steps.complaint_id == complaint_id).\
-    order_by(models.Compaint_Steps.complaint_step_id.desc()).\
+    last_step = db.query(models.Complaint_Steps).\
+    filter(models.Complaint_Steps.complaint_id == complaint_id).\
+    order_by(models.Complaint_Steps.complaint_step_id.desc()).\
     first()
 
     current_action = last_step.action_type if last_step else "No Action Recorded"
@@ -89,7 +88,7 @@ def complaint_action(review: schemas.Review_Complaint, db: Session = Depends(dat
         if not step:
             raise HTTPException(status_code=404, detail="No active workflow step")
 
-        db.add(models.Compaint_Steps(
+        db.add(models.Complaint_Steps(
             complaint_id=review.complaint_id,
             workflow_step_id=step.workflow_step_id,
             action_type=models.StepAction.APPROVED,
@@ -124,7 +123,7 @@ def reject_complaint(payload: schemas.RejectComplaint, db: Session = Depends(dat
 
     step = utils.get_current_workflow_step(db, payload.complaint_id)
 
-    db.add(models.Compaint_Steps(
+    db.add(models.Complaint_Steps(
         complaint_id=payload.complaint_id,
         workflow_step_id=step.workflow_step_id, # type: ignore
         action_type=models.StepAction.REJECTED,

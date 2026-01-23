@@ -1,5 +1,4 @@
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from myapp import schemas, database, models
 from sqlalchemy.orm import Session
 
@@ -24,16 +23,16 @@ def get_review_history(details: schemas.Details, db: Session = Depends(database.
 
     rows = (
         db.query(
-            models.Compaint_Steps,
+            models.Complaint_Steps,
             models.User,
             models.Role
         )
-        .join(models.User, models.User.userid == models.Compaint_Steps.acted_by)
+        .join(models.User, models.User.userid == models.Complaint_Steps.acted_by)
         .join(models.Role, models.Role.roleid == models.User.roleid)
-        .filter(models.Compaint_Steps.complaint_id == details.complaint_id)
+        .filter(models.Complaint_Steps.complaint_id == details.complaint_id)
         .order_by(
-            models.Compaint_Steps.workflow_step_id,
-            models.Compaint_Steps.acted_at
+            models.Complaint_Steps.workflow_step_id,
+            models.Complaint_Steps.acted_at
         )
         .all()
     )

@@ -1,5 +1,5 @@
-from pydantic import BaseModel, RootModel
-from typing import List, Optional
+from pydantic import BaseModel
+from typing import List
 
 class Login_Cred(BaseModel):
     username: str
@@ -48,7 +48,7 @@ class InfoResponse(BaseModel):
     note: str
     acted_by: int
 
-
+    
 class ApproveComplaint(BaseModel):
     complaint_id: int
     reviewer_id: int

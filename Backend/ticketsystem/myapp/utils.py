@@ -1,9 +1,7 @@
-# utils/complaint_workflow.py
-
 from sqlalchemy.orm import Session
 from typing import Optional, Set
 
-from myapp.models import Complaint, Workflow_Steps, Compaint_Steps, StepAction
+from myapp.models import Complaint, Workflow_Steps, Complaint_Steps, StepAction
 
 def get_current_workflow_step(db: Session, complaint_id: int) -> Optional[Workflow_Steps]:
 
@@ -19,10 +17,10 @@ def get_current_workflow_step(db: Session, complaint_id: int) -> Optional[Workfl
     approved_steps: Set[int] = {
         row[0]
         for row in (
-            db.query(Compaint_Steps.workflow_step_id)
+            db.query(Complaint_Steps.workflow_step_id)
             .filter(
-                Compaint_Steps.complaint_id == complaint_id,
-                Compaint_Steps.action_type == StepAction.APPROVED
+                Complaint_Steps.complaint_id == complaint_id,
+                Complaint_Steps.action_type == StepAction.APPROVED
             )
             .all()
         )
